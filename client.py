@@ -1,10 +1,9 @@
 import socket
-from multiprocessing import Process
 
 class Main:
     def __init__(self):
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.ip = 'localhost'
+        self.ip = 'altera-server.ddns.net'
         self.sock.connect((self.ip, 8888))
         self.whileloop()
 
