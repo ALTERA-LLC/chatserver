@@ -12,9 +12,10 @@ class Main:
 
     def whileloop(self):
         while True:
+            print('Type "quit"')
             h = input('msg:')
             print(f'You have sent sam: {h}')
-            self.sock.send(h.encode('unicode'))
+            self.sock.send(h.encode('utf-8'))
 
 
 
