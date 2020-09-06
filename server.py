@@ -14,6 +14,10 @@ class Main:
         self.s, self.a = self.sock.accept()
         while True:
             mesg = self.s.recv(1024).decode('utf-8')
-            print(f'Rory: {mesg}')
+            if mesg == 'quit':
+                exit()
+            else:
+                print(f'Rory: {mesg}')
+
 
 main = Main()

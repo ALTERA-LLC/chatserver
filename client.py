@@ -3,7 +3,7 @@ import socket
 class Main:
     def __init__(self):
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.ip = '58.160.92.128'
+        self.ip = 'altera-server.ddns.net'
         self.sock.connect((self.ip, 2288))
         self.whileloop()
 
@@ -12,10 +12,16 @@ class Main:
 
     def whileloop(self):
         while True:
-            print('Type "quit"')
+            print('Type "quit" to exit the program ')
             h = input('msg:')
-            print(f'You have sent sam: {h}')
-            self.sock.send(h.encode('utf-8'))
+            if h == 'quit':
+                print('shutting down server')
+                self.sock.send('quit'.encode('utf-8'))
+                print('shutdown: goodbye :)')
+                exit()
+            else:
+                print(f'You have sent sam: {h}')
+                self.sock.send(h.encode('utf-8'))
 
 
 
