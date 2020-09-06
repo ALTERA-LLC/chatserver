@@ -13,7 +13,7 @@ class Main:
     def whileloop(self):
         self.s, self.a = self.sock.accept()
         while True:
-            mesg = self.s.recv(1024).decode('unicode')
+            mesg = self.s.recv(1024).decode('utf-8')
             print(f'Rory: {mesg}')
 
 main = Main()
