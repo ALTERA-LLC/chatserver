@@ -14,7 +14,7 @@ class Main:
         while True:
             h = input('msg:')
             print(f'You have sent sam: {h}')
-            self.sock.send(h.encode())
+            self.sock.send(h.encode('unicode'))
 
 
 
