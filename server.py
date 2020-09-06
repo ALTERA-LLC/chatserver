@@ -15,6 +15,7 @@ class Main:
         while True:
             mesg = self.s.recv(1024).decode('utf-8')
             if mesg == 'quit':
+                print('Rory has shut down the server')
                 exit()
             else:
                 print(f'Rory: {mesg}')
