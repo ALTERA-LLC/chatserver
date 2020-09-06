@@ -18,8 +18,4 @@ class Main:
 
 
 
-    def recv(self):
-        print('recv')
-        print(self.sock.recv(1024).decode())
-
 main = Main()
