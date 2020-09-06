@@ -13,6 +13,7 @@ class Main:
     def whileloop(self):
         self.s, self.a = self.sock.accept()
         while True:
-            print(f'Rory: {self.s.recv(1024).decode()}')
+            mesg = self.s.recv(1024).decode()
+            print(f'Rory: {mesg}')
 
 main = Main()
