@@ -1,11 +1,12 @@
 import socket
 import threading
+import time
 
 class Main:
     def __init__(self):
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.ip = 'localhost'
-        self.name = 'Sam'
+        self.name = 'hello'
         self.join()
 
     def join(self):
@@ -21,7 +22,8 @@ class Main:
             self.sock.send(input('msg: ').encode('utf-8'))
     def recv(self):
         while True:
-            print(f"{self.sock.recv(1024).decode('utf-8')}\n:")
+
+            print(self.sock.recv(1024).decode('utf-8'))
 
 
 main = Main()
