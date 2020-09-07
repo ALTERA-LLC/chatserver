@@ -4,8 +4,8 @@ import threading
 class Main:
     def __init__(self):
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.ip = 'localhost'
-        self.name = 'Sam'
+        self.ip = 'altera-server.ddns.net'
+        self.name = input('name: ')
         self.join()
 
     def join(self):
