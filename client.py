@@ -1,10 +1,12 @@
 import socket
 import threading
 
+
+
 class Main:
     def __init__(self):
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.ip = 'altera-server.ddns.net'
+        self.ip = 'localhost'
         self.name = input('name: ')
         self.join()
 
@@ -16,8 +18,10 @@ class Main:
         he.start()
         le.start()
 
+
     def send(self):
         while True:
+
             self.sock.send(input('msg: ').encode('utf-8'))
     def recv(self):
         while True:

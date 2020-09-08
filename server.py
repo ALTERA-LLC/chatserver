@@ -5,7 +5,7 @@ import threading
 class Main:
     def __init__(self):
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.ip = '192.168.0.69'
+        self.ip = 'localhost'
         self.clients = []
         self.nicks = []
         self.sock.bind((self.ip, 2288))
@@ -41,6 +41,7 @@ class Main:
                 print(msg)
                 self.brodcast(msg, self.nicks[int(index)])
                 print(index)
+
 
 
 
