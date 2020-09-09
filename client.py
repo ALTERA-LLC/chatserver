@@ -46,7 +46,6 @@ class Main:
             self.initbild()
             sleep(2)
             conlabel.destroy()
-            self.initrecv()
             threading.Thread(target=self.recv).start()
 
 
@@ -68,10 +67,6 @@ class Main:
             self.entry()
         else:
             exit()
-
-    def initrecv(self):
-        for msg in self.sock.recv(1024).decode('utf-8'):
-            self.listbox.insert(END, msg)
 
     def recv(self):
         self.running = True

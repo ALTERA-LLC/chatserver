@@ -32,6 +32,7 @@ class Main:
         for clinet in self.clients:
             clinet.send(f'{nickname}: {message}'.encode('utf-8'))
             self.msghistory.append(f'{nickname}: {message}')
+            print(self.msghistory)
 
     def handle(self):
         while True:
@@ -39,7 +40,6 @@ class Main:
             nick = self.s.recv(1024).decode('utf-8')
             self.users(nick)
             print(self.mainbroid('joined the chat', nick))
-            self.s.send(str(self.msghistory).encode())
             le = threading.Thread(target=self.recv, args=(self.index))
             le.start()
 
