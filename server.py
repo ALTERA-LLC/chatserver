@@ -19,6 +19,12 @@ class Main:
         print(self.clients)
         print(self.nicks)
 
+    def exitbroid(self, message, nickname):
+        if len(self.clients) == 0:
+            return 'no one is connected to server'
+        else:
+            for clinet in self.clients:
+                clinet.send(f'{nickname} {message}'.encode('utf-8'))
 
     def brodcast(self, message, nickname):
         for clinet in self.clients:
@@ -32,21 +38,23 @@ class Main:
             le = threading.Thread(target=self.recv, args=(self.index))
             le.start()
 
-
-
     def recv(self, index):
-        while True:
-                h = self.clients[int(index)]
-                msg = h.recv(1024).decode('utf-8')
+        running = True
+        client = self.clients[int(index)]
+        nick = self.nicks[int(index)]
+        while running:
+            try:
+                msg = client.recv(1024).decode('utf-8')
                 print(msg)
                 self.brodcast(msg, self.nicks[int(index)])
                 print(index)
-
-
-
-
-
-
+            except:
+                self.clients.remove(client)
+                self.nicks.remove(nick)
+                print(self.exitbroid('left the chat', nick))
+                client.close()
+                running = False
+        print(f'{nick}: Thread has stopped')
 
 
 
