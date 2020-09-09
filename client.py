@@ -27,7 +27,7 @@ class Main:
         conlabel = Label(text='Connecting', font=('Consolas', 15, 'bold'), bg='black', fg='white')
         conlabel.pack(side=TOP)
         try:
-            self.sock.connect(('localhost', 2288))
+            self.sock.connect(('altera-server.ddns.net', 2288))
             self.sock.send(self.name.encode('utf-8'))
         except:
             print("error couldn't connect to server\nretrying in 2 seconds")
@@ -36,7 +36,7 @@ class Main:
             print('retrying')
             self.join()
         finally:
-            sleep(7)
+            sleep(3)
             conlabel.place(x=1000, y=1000)
             print('connected to server')
             conlabel = Label(text='Connected to server', font=('Consolas', 15, 'bold'), bg='black', fg='white')
