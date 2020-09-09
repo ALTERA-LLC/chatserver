@@ -13,6 +13,7 @@ class Main:
         self.root.config(bg='black')
         self.root.resizable(0, 0)
         self.exiting = False
+        self.listbox = Listbox(self.root, font=('Consolas', 15, 'bold'), bg='black', fg='white', width=54)
         self.root.protocol("WM_DELETE_WINDOW", self.exit)
         self.root.geometry('600x400')
         threading.Thread(target=self.join).start()
@@ -48,13 +49,16 @@ class Main:
 
 
     def initbild(self):
+        Label(text='ALTERA CHAT CLIENT V.1.0', font=('Consolas', 15, 'bold'), bg='black', fg='white').place(x=0, y=0)
+        self.listbox.place(x=0, y=50)
         self.root.bind('<Return>', func=self.sendmsg)
         self.entry()
 
     def entry(self):
         Label(self.root, bg='black', fg='white', text='Messsge:', font=('Consolas', 15, 'bold')).place(x=0, y=320)
-        self.hello = Text(self.root, bg='black', fg='white', height=2, font=('Consolas', 15, 'bold'), insertbackground='white')
-        self.hello.place(x=0, y=350)
+        self.hello = Text(self.root, bg='black', fg='white', height=1, font=('Consolas', 15, 'bold'),
+                          insertbackground='white', bd=3)
+        self.hello.place(x=0, y=369)
 
     def sendmsg(self, event):
         if not self.exiting:
@@ -63,11 +67,17 @@ class Main:
         else:
             exit()
 
+    def initrecv(self):
+        for msg in self.sock.recv(1024).decode('utf-8'):
+            self.listbox.insert(END, msg)
+
     def recv(self):
         self.running = True
         while self.running:
             try:
-                print(self.sock.recv(1024).decode('utf-8'))
+                hello = self.sock.recv(1024).decode('utf-8')
+                print(hello)
+                self.listbox.insert(END, hello)
             except:
                 if not self.exiting:
                     print('error: server connection lost')
