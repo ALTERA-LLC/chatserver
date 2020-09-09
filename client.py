@@ -32,6 +32,7 @@ class Main:
         except:
             print("error couldn't connect to server\nretrying in 2 seconds")
             sleep(2)
+            conlabel.destroy()
             print('retrying')
             self.join()
         finally:
