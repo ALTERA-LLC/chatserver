@@ -25,6 +25,7 @@ class Main:
         else:
             for clinet in self.clients:
                 clinet.send(f'{nickname} {message}'.encode('utf-8'))
+                return f'{nickname} {message}'
 
     def brodcast(self, message, nickname):
         for clinet in self.clients:

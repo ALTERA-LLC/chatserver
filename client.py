@@ -53,12 +53,15 @@ class Main:
 
     def entry(self):
         Label(self.root, bg='black', fg='white', text='Messsge:', font=('Consolas', 15, 'bold')).place(x=0, y=320)
-        self.hello = Text(self.root, bg='black', fg='white', height=2, font=('Consolas', 15, 'bold'))
+        self.hello = Text(self.root, bg='black', fg='white', height=2, font=('Consolas', 15, 'bold'), insertbackground='white')
         self.hello.place(x=0, y=350)
 
     def sendmsg(self, event):
-        self.sock.send(str(self.hello.get("1.0", 'end-1c')).encode('utf-8'))
-        self.entry()
+        if not self.exiting:
+            self.sock.send(str(self.hello.get("1.0", 'end-1c')).encode('utf-8'))
+            self.entry()
+        else:
+            exit()
 
     def recv(self):
         self.running = True
