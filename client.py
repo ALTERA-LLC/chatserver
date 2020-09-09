@@ -21,7 +21,7 @@ class Main:
         self.exiting = True
         print('you have closed the connection')
         self.sock.close()
-        sys.exit()
+        exit()
 
     def join(self):
         conlabel = Label(text='Connecting', font=('Consolas', 15, 'bold'), bg='black', fg='white')
@@ -68,7 +68,7 @@ class Main:
             except:
                 if not self.exiting:
                     print('error: server connection lost')
-                    self.join()
+                    threading.Thread(target=self.join).start()
                     self.running = False
                 else:
                     self.running = False
