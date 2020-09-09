@@ -13,6 +13,7 @@ class Main:
         self.root.config(bg='black')
         self.root.resizable(0, 0)
         self.exiting = False
+        self.root.title('ALTERA CHAT CLIENT')
         self.listbox = Listbox(self.root, font=('Consolas', 15, 'bold'), bg='black', fg='white', width=54)
         self.root.protocol("WM_DELETE_WINDOW", self.exit)
         self.root.geometry('600x400')
