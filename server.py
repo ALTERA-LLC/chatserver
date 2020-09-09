@@ -8,6 +8,7 @@ class Main:
         self.ip = '192.168.0.69'
         self.clients = []
         self.nicks = []
+        self.msghistory = []
         self.sock.bind((self.ip, 2288))
         self.sock.listen(1)
         self.handle()
@@ -30,6 +31,7 @@ class Main:
     def brodcast(self, message, nickname):
         for clinet in self.clients:
             clinet.send(f'{nickname}: {message}'.encode('utf-8'))
+            self.msghistory.append(f'{nickname}: {message}')
 
     def handle(self):
         while True:
@@ -37,6 +39,7 @@ class Main:
             nick = self.s.recv(1024).decode('utf-8')
             self.users(nick)
             print(self.mainbroid('joined the chat', nick))
+            self.s.send(str(self.msghistory).encode())
             le = threading.Thread(target=self.recv, args=(self.index))
             le.start()
 

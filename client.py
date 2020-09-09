@@ -46,6 +46,7 @@ class Main:
             self.initbild()
             sleep(2)
             conlabel.destroy()
+            self.initrecv()
             threading.Thread(target=self.recv).start()
 
 
