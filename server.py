@@ -19,7 +19,7 @@ class Main:
         print(self.clients)
         print(self.nicks)
 
-    def exitbroid(self, message, nickname):
+    def mainbroid(self, message, nickname):
         if len(self.clients) == 0:
             return 'no one is connected to server'
         else:
@@ -36,6 +36,7 @@ class Main:
             self.s, self.a = self.sock.accept()
             nick = self.s.recv(1024).decode('utf-8')
             self.users(nick)
+            print(self.mainbroid('joined the chat', nick))
             le = threading.Thread(target=self.recv, args=(self.index))
             le.start()
 
@@ -52,7 +53,6 @@ class Main:
             except:
                 self.clients.remove(client)
                 self.nicks.remove(nick)
-                print(self.exitbroid('left the chat', nick))
                 client.close()
                 running = False
         print(f'{nick}: Thread has stopped')
