@@ -5,13 +5,16 @@ import threading
 class Main:
     def __init__(self):
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.ip = '192.168.0.69'
         self.clients = []
         self.nicks = []
         self.msghistory = []
-        self.sock.bind((self.ip, 2288))
-        self.sock.listen(1)
-        self.handle()
+        try:
+            self.sock.bind(('localhost', 2288))
+        except:
+            self.sock.bind(('localhost', 2288))
+        finally:
+            self.sock.listen(1)
+            self.handle()
 
     def users(self, user):
         self.clients.append(self.s)
@@ -20,26 +23,24 @@ class Main:
         print(self.clients)
         print(self.nicks)
 
-    def mainbroid(self, message, nickname):
+    def joinnexit(self, message, nickname):
         if len(self.clients) == 0:
             return 'no one is connected to server'
         else:
-            for clinet in self.clients:
-                clinet.send(f'{nickname} {message}'.encode('utf-8'))
-                return f'{nickname} {message}'
+            self.brodcast(message, nickname)
+            print(f'{nickname} {message}')
 
     def brodcast(self, message, nickname):
         for clinet in self.clients:
-            clinet.send(f'{nickname}: {message}'.encode('utf-8'))
+            clinet.send(f'{nickname} {message}'.encode('utf-8'))
             self.msghistory.append(f'{nickname}: {message}')
-            print(self.msghistory)
 
     def handle(self):
         while True:
             self.s, self.a = self.sock.accept()
             nick = self.s.recv(1024).decode('utf-8')
             self.users(nick)
-            print(self.mainbroid('joined the chat', nick))
+            print(self.joinnexit('joined the chat', nick))
             le = threading.Thread(target=self.recv, args=(self.index))
             le.start()
 
@@ -51,11 +52,12 @@ class Main:
             try:
                 msg = client.recv(1024).decode('utf-8')
                 print(msg)
-                self.brodcast(msg, self.nicks[int(index)])
+                self.brodcast(msg, self.nicks[int(index)] + ':')
                 print(index)
             except:
                 self.clients.remove(client)
                 self.nicks.remove(nick)
+                self.joinnexit('left the chat', nick)
                 client.close()
                 running = False
         print(f'{nick}: Thread has stopped')

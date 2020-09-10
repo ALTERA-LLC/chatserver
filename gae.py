@@ -9,7 +9,8 @@ class Main:
     def __init__(self):
         self.root = Tk()
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.name = Entry(self.root, font=('Consolas', 15, 'bold'), bg='black', fg='white', insertbackground='white')
+        self.name = input('name:')
+        self.root.config(bg='black')
         self.root.resizable(0, 0)
         self.exiting = False
         self.scrollbar = Scrollbar(self.root, orient=VERTICAL)
@@ -17,9 +18,7 @@ class Main:
         self.listbox = Listbox(self.root, font=('Consolas', 15, 'bold'), bg='black', fg='white', width=52)
         self.root.protocol("WM_DELETE_WINDOW", self.exit)
         self.root.geometry('600x400')
-        self.name.pack(side=TOP)
-        self.root.bind('<Return>', func=self.rootconfig)
-        self.root.config(bg='black')
+        threading.Thread(target=self.join).start()
 
     def exit(self):
         self.exiting = True
@@ -27,18 +26,12 @@ class Main:
         self.sock.close()
         exit()
 
-
-    def rootconfig(self, event):
-        self.name.place(x=1000, y=1000)
-        threading.Thread(target=self.join).start()
-
-
     def join(self):
         conlabel = Label(text='Connecting', font=('Consolas', 15, 'bold'), bg='black', fg='white')
         conlabel.pack(side=TOP)
         try:
             self.sock.connect(('localhost', 2288))
-            self.sock.send(self.name.get().encode('utf-8'))
+            self.sock.send(self.name.encode('utf-8'))
         except:
             print("error couldn't connect to server\nretrying in 2 seconds")
             sleep(2)
