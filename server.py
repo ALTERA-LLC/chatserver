@@ -9,7 +9,7 @@ class Main:
         self.nicks = []
         self.msghistory = []
         try:
-            self.sock.bind(('localhost', 2288))
+            self.sock.bind(('192.168.0.69', 2288))
         except:
             self.sock.bind(('localhost', 2288))
         finally:
