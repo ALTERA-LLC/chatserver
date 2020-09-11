@@ -32,7 +32,7 @@ class Main:
 
     def brodcast(self, message, nickname, index=None):
         for clinet in self.clients:
-            clinet
+            clinet.send(str(index).encode('utf-8'))
             clinet.send(f'{nickname} {message}'.encode('utf-8'))
             self.msghistory.append(f'{nickname}: {message}')
 
