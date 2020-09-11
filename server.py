@@ -32,7 +32,6 @@ class Main:
 
     def brodcast(self, message, nickname, index):
         for clinet in self.clients:
-            clinet.send(str(index).encode('utf-8'))
             clinet.send(f'{nickname} {message}'.encode('utf-8'))
             self.msghistory.append(f'{nickname}: {message}')
 
@@ -59,7 +58,7 @@ class Main:
             except:
                 self.clients.remove(client)
                 self.nicks.remove(nick)
-                self.joinnexit('left the chat', nick)
+                self.joinnexit('left the chat', nick, index)
                 client.close()
                 running = False
         print(f'{nick}: Thread has stopped')

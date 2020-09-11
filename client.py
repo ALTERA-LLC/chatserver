@@ -47,6 +47,7 @@ class Main:
                 finally:
                     self.sock.send(self.name.get().encode('utf-8'))
                     self.index = self.sock.recv(1024).decode('utf-8')
+                    print(f'Index: {self.index}')
             except:
                 print("error couldn't connect to server\nretrying in 2 seconds")
                 conlabel.destroy()
@@ -94,10 +95,7 @@ class Main:
         self.running = True
         while self.running:
             try:
-                index = self.sock.recv(1024).decode('utf-8')
                 hello = self.sock.recv(1024).decode('utf-8')
-                if not index == self.index:
-                    threading.Thread(target=lambda: self.notfify.show_toast('ALTERA CHAT CLIENT', hello))
                 print(hello)
                 self.listbox.insert(0, hello)
             except:
