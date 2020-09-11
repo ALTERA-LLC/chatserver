@@ -3,6 +3,7 @@ import socket
 import threading
 import os
 from time import sleep
+from win10toast import ToastNotifier
 
 
 class Main:
@@ -12,6 +13,7 @@ class Main:
         self.name = Entry(self.root, font=('Consolas', 15, 'bold'), bg='black', fg='white', insertbackground='white')
         self.root.resizable(0, 0)
         self.exiting = False
+        self.notfify = ToastNotifier()
         self.scrollbar = Scrollbar(self.root, orient=VERTICAL)
         self.root.title('ALTERA CHAT CLIENT')
         self.listbox = Listbox(self.root, font=('Consolas', 15, 'bold'), bg='black', fg='white', width=52)
@@ -25,7 +27,7 @@ class Main:
         self.exiting = True
         print('you have closed the connection')
         self.sock.close()
-        exit()
+        sys.exit()
 
 
     def rootconfig(self, event):
@@ -36,25 +38,29 @@ class Main:
     def join(self):
         conlabel = Label(text='Connecting', font=('Consolas', 15, 'bold'), bg='black', fg='white')
         conlabel.pack(side=TOP)
-        try:
-            self.sock.connect(('localhost', 2288))
-            self.sock.send(self.name.get().encode('utf-8'))
-        except:
-            print("error couldn't connect to server\nretrying in 2 seconds")
-            sleep(2)
-            conlabel.destroy()
-            print('retrying')
-            self.join()
-        finally:
-            sleep(3)
-            conlabel.place(x=1000, y=1000)
-            print('connected to server')
-            conlabel = Label(text='Connected to server', font=('Consolas', 15, 'bold'), bg='black', fg='white')
-            conlabel.place(x=350, y=150)
-            self.initbild()
-            threading.Thread(target=self.recv).start()
-            sleep(2)
-            conlabel.destroy()
+        if not self.exiting:
+            try:
+                self.sock.connect(('altera-server.ddns.net', 2288))
+                self.sock.send(self.name.get().encode('utf-8'))
+                self.index = self.sock.recv(1024).decode('utf-8')
+            except:
+                print("error couldn't connect to server\nretrying in 2 seconds")
+                conlabel.destroy()
+                print('retrying')
+                self.join()
+            finally:
+                sleep(3)
+                conlabel.place(x=1000, y=1000)
+                print('connected to server')
+                conlabel = Label(text='Connected to server', font=('Consolas', 15, 'bold'), bg='black', fg='white')
+                conlabel.place(x=350, y=150)
+                self.initbild()
+                threading.Thread(target=self.recv).start()
+                sleep(1)
+                conlabel.destroy()
+        else:
+            sys.exit()
+
 
 
     def initbild(self):
@@ -77,18 +83,19 @@ class Main:
             else:
                 self.sock.send(msg.encode('utf-8'))
                 self.entry()
-
-
         else:
-            exit()
+            sys.exit()
 
     def recv(self):
         self.running = True
         while self.running:
             try:
+                index = self.sock.recv(1024).decode('utf-8')
                 hello = self.sock.recv(1024).decode('utf-8')
+                if not index == self.index:
+                    threading.Thread(target=lambda: self.notfify.show_toast('ALTERA CHAT CLIENT', hello))
                 print(hello)
-                self.listbox.insert(END, hello)
+                self.listbox.insert(0, hello)
             except:
                 if not self.exiting:
                     print('error: server connection lost')

@@ -30,8 +30,9 @@ class Main:
             self.brodcast(message, nickname)
             print(f'{nickname} {message}')
 
-    def brodcast(self, message, nickname):
+    def brodcast(self, message, nickname, index=None):
         for clinet in self.clients:
+            clinet
             clinet.send(f'{nickname} {message}'.encode('utf-8'))
             self.msghistory.append(f'{nickname}: {message}')
 
@@ -40,6 +41,7 @@ class Main:
             self.s, self.a = self.sock.accept()
             nick = self.s.recv(1024).decode('utf-8')
             self.users(nick)
+            self.s.send(self.index.encode('uft-8'))
             print(self.joinnexit('joined the chat', nick))
             le = threading.Thread(target=self.recv, args=(self.index))
             le.start()
@@ -52,7 +54,7 @@ class Main:
             try:
                 msg = client.recv(1024).decode('utf-8')
                 print(msg)
-                self.brodcast(msg, self.nicks[int(index)] + ':')
+                self.brodcast(msg, self.nicks[int(index)] + ':', index)
                 print(index)
             except:
                 self.clients.remove(client)
