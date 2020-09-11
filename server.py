@@ -41,7 +41,7 @@ class Main:
             self.s, self.a = self.sock.accept()
             nick = self.s.recv(1024).decode('utf-8')
             self.users(nick)
-            self.s.send(self.index.encode('uft-8'))
+            self.s.send(self.index.encode('utf-8'))
             print(self.joinnexit('joined the chat', nick))
             le = threading.Thread(target=self.recv, args=(self.index))
             le.start()
