@@ -40,9 +40,13 @@ class Main:
         conlabel.pack(side=TOP)
         if not self.exiting:
             try:
-                self.sock.connect(('altera-server.ddns.net', 2288))
-                self.sock.send(self.name.get().encode('utf-8'))
-                self.index = self.sock.recv(1024).decode('utf-8')
+                try:
+                    self.sock.connect(('altera-server.ddns.net', 2288))
+                except:
+                    self.sock.connect(('localhost', 2288))
+                finally:
+                    self.sock.send(self.name.get().encode('utf-8'))
+                    self.index = self.sock.recv(1024).decode('utf-8')
             except:
                 print("error couldn't connect to server\nretrying in 2 seconds")
                 conlabel.destroy()

@@ -23,14 +23,14 @@ class Main:
         print(self.clients)
         print(self.nicks)
 
-    def joinnexit(self, message, nickname):
+    def joinnexit(self, message, nickname, index):
         if len(self.clients) == 0:
             return 'no one is connected to server'
         else:
-            self.brodcast(message, nickname)
+            self.brodcast(message, nickname, index)
             print(f'{nickname} {message}')
 
-    def brodcast(self, message, nickname, index=None):
+    def brodcast(self, message, nickname, index):
         for clinet in self.clients:
             clinet.send(str(index).encode('utf-8'))
             clinet.send(f'{nickname} {message}'.encode('utf-8'))
@@ -41,7 +41,8 @@ class Main:
             self.s, self.a = self.sock.accept()
             nick = self.s.recv(1024).decode('utf-8')
             self.users(nick)
-            print(self.joinnexit('joined the chat', nick))
+            self.s.send(self.index.encode('utf-8'))
+            print(self.joinnexit('joined the chat', nick, self.index))
             le = threading.Thread(target=self.recv, args=(self.index))
             le.start()
 
