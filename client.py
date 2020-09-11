@@ -3,7 +3,6 @@ import socket
 import threading
 import os
 from time import sleep
-from win10toast import ToastNotifier
 
 
 class Main:
@@ -13,7 +12,6 @@ class Main:
         self.name = Entry(self.root, font=('Consolas', 15, 'bold'), bg='black', fg='white', insertbackground='white')
         self.root.resizable(0, 0)
         self.exiting = False
-        self.notfify = ToastNotifier()
         self.scrollbar = Scrollbar(self.root, orient=VERTICAL)
         self.root.title('ALTERA CHAT CLIENT')
         self.listbox = Listbox(self.root, font=('Consolas', 15, 'bold'), bg='black', fg='white', width=52)
@@ -47,7 +45,7 @@ class Main:
                 finally:
                     self.sock.send(self.name.get().encode('utf-8'))
                     self.index = self.sock.recv(1024).decode('utf-8')
-                    print(f'Index: {self.index}')
+                    print(f'Your connection index: {self.index}')
             except:
                 print("error couldn't connect to server\nretrying in 2 seconds")
                 conlabel.destroy()
