@@ -27,15 +27,13 @@ class Main:
         self.sock.close()
         sys.exit()
 
-
     def rootconfig(self, event):
         self.name.place(x=1000, y=1000)
         threading.Thread(target=self.join).start()
 
-
     def join(self):
-        conlabel = Label(text='Connecting', font=('Consolas', 15, 'bold'), bg='black', fg='white')
-        conlabel.pack(side=TOP)
+        self.conlabel = Label(text='Connecting', font=('Consolas', 15, 'bold'), bg='black', fg='white')
+        self.conlabel.pack(side=TOP)
         if not self.exiting:
             try:
                 try:
@@ -48,23 +46,34 @@ class Main:
                     print(f'Your connection index: {self.index}')
             except:
                 print("error couldn't connect to server\nretrying in 2 seconds")
-                conlabel.destroy()
+                try:
+                    self.conlabel.destroy()
+                except:
+                    sys.exit()
                 print('retrying')
                 self.join()
             finally:
-                sleep(3)
-                conlabel.place(x=1000, y=1000)
-                print('connected to server')
-                conlabel = Label(text='Connected to server', font=('Consolas', 15, 'bold'), bg='black', fg='white')
-                conlabel.place(x=350, y=150)
-                self.initbild()
-                threading.Thread(target=self.recv).start()
-                sleep(1)
-                conlabel.destroy()
+                self.initcon()
+
         else:
             sys.exit()
 
-
+    def initcon(self):
+        sleep(1)
+        try:
+            self.conlabel.destroy()
+        except:
+            sys.exit()
+        print('connected to server')
+        conlabel = Label(text='Connected to server', font=('Consolas', 15, 'bold'), bg='black', fg='white')
+        conlabel.place(x=350, y=150)
+        threading.Thread(target=self.initbild).start()
+        threading.Thread(target=self.recv).start()
+        sleep(1)
+        try:
+            conlabel.destroy()
+        except:
+            sys.exit()
 
     def initbild(self):
         Label(text='ALTERA CHAT CLIENT V.1.0', font=('Consolas', 15, 'bold'), bg='black', fg='white').place(x=0, y=0)
@@ -105,8 +114,5 @@ class Main:
                     self.running = False
 
 
-
-
 mainmf = Main()
 mainmf.root.mainloop()
-
